@@ -1,0 +1,15 @@
+C:\Users\Twinkle\Documents\GitHub\Project03\Project_DemEkz\Project_DemEkz\bin\Debug\Project_DemEkz.exe.config
+C:\Users\Twinkle\Documents\GitHub\Project03\Project_DemEkz\Project_DemEkz\bin\Debug\Project_DemEkz.exe
+C:\Users\Twinkle\Documents\GitHub\Project03\Project_DemEkz\Project_DemEkz\bin\Debug\Project_DemEkz.pdb
+C:\Users\Twinkle\Documents\GitHub\Project03\Project_DemEkz\Project_DemEkz\obj\Debug\Project_DemEkz.csproj.AssemblyReference.cache
+C:\Users\Twinkle\Documents\GitHub\Project03\Project_DemEkz\Project_DemEkz\obj\Debug\MainWindow.g.cs
+C:\Users\Twinkle\Documents\GitHub\Project03\Project_DemEkz\Project_DemEkz\obj\Debug\App.g.cs
+C:\Users\Twinkle\Documents\GitHub\Project03\Project_DemEkz\Project_DemEkz\obj\Debug\Project_DemEkz_MarkupCompile.cache
+C:\Users\Twinkle\Documents\GitHub\Project03\Project_DemEkz\Project_DemEkz\obj\Debug\Project_DemEkz_MarkupCompile.lref
+C:\Users\Twinkle\Documents\GitHub\Project03\Project_DemEkz\Project_DemEkz\obj\Debug\MainWindow.baml
+C:\Users\Twinkle\Documents\GitHub\Project03\Project_DemEkz\Project_DemEkz\obj\Debug\Project_DemEkz.g.resources
+C:\Users\Twinkle\Documents\GitHub\Project03\Project_DemEkz\Project_DemEkz\obj\Debug\Project_DemEkz.Properties.Resources.resources
+C:\Users\Twinkle\Documents\GitHub\Project03\Project_DemEkz\Project_DemEkz\obj\Debug\Project_DemEkz.csproj.GenerateResource.cache
+C:\Users\Twinkle\Documents\GitHub\Project03\Project_DemEkz\Project_DemEkz\obj\Debug\Project_DemEkz.csproj.CoreCompileInputs.cache
+C:\Users\Twinkle\Documents\GitHub\Project03\Project_DemEkz\Project_DemEkz\obj\Debug\Project_DemEkz.exe
+C:\Users\Twinkle\Documents\GitHub\Project03\Project_DemEkz\Project_DemEkz\obj\Debug\Project_DemEkz.pdb
