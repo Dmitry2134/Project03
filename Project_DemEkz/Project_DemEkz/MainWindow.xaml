@@ -99,7 +99,7 @@
         <!--Search panel-->
         <WrapPanel Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Left">
             <Grid>
-                <TextBox x:Name="TbSearch" Style="{StaticResource tbSearch}" Width="250" Text="" Margin="60,0,0,0"/>
+                <TextBox x:Name="TbSearch" Style="{StaticResource tbSearch}" Width="250" Text="" Margin="60,0,0,0" TextChanged="TbSearch_TextChanged"/>
                 <TextBlock IsHitTestVisible="False" Margin="73,6,31,7" Text="Название" FontSize="16" Foreground="LightGray">
                 <TextBlock.Style>
                     <Style TargetType="{x:Type TextBlock}">
@@ -115,7 +115,7 @@
             </Grid>
 
             <!--Types-of-materials-->
-            <ComboBox BorderThickness="2" Margin="50,0,0,0" Width="150" IsEditable="True" IsReadOnly="True" SelectedIndex="0" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"  >
+            <ComboBox x:Name="cbTypes" BorderThickness="2" Margin="50,0,0,0" Width="150" IsEditable="True" IsReadOnly="True" SelectedIndex="0" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" SelectionChanged="cb_SelectionChanged"  >
                 <ComboBox.ItemContainerStyle>
                     <Style TargetType="ComboBoxItem">
                         <Setter Property="BorderBrush" Value="#FFC1C1"/>
@@ -129,7 +129,7 @@
             </ComboBox>
 
             <!--Filter-->
-            <ComboBox BorderThickness="2" Margin="50,0,0,0" Width="150" IsEditable="True" IsReadOnly="True" Text="Фильтр" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" >
+            <ComboBox x:Name="cbFilter" BorderThickness="2" Margin="50,0,0,0" Width="150" IsEditable="True" IsReadOnly="True" Text="Фильтр" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" SelectionChanged="cb_SelectionChanged" >
                 <ComboBox.ItemContainerStyle>
                     <Style TargetType="ComboBoxItem">
                         <Setter Property="BorderBrush" Value="#FFC1C1"/>

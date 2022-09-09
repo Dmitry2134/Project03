@@ -24,5 +24,21 @@ namespace Project_DemEkz
         {
             InitializeComponent();
         }
+
+        private void UpdateDataGrid()
+        {
+            MessageBox.Show($"{TbSearch.Text}");
+        }
+
+        private void cb_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            UpdateDataGrid();
+        }
+
+        private void TbSearch_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            UpdateDataGrid();
+        }
+
     }
 }
