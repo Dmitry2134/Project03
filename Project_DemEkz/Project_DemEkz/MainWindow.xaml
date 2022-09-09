@@ -7,7 +7,8 @@
         mc:Ignorable="d"
         Title="Большая пачка"
         Height="700" Width="1100"
-        FontFamily="Verdana">
+        FontFamily="Verdana"
+        WindowStartupLocation="CenterScreen">
 
     <Window.Resources>
         <Style x:Key="tbSearch" TargetType="TextBox">
@@ -22,7 +23,7 @@
                 <Setter.Value>
                     <ControlTemplate TargetType="TextBox">
                         <Grid x:Name="root" Height="{TemplateBinding Height}" Width="{TemplateBinding Width}" SnapsToDevicePixels="True">
-                            <Border x:Name="Background" BorderThickness="2" CornerRadius="2" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}"/>
+                            <Border x:Name="Background" BorderThickness="2" CornerRadius="0" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}"/>
                             <ScrollViewer x:Name="PART_ContentHost" BorderThickness="0" Padding="{TemplateBinding Padding}" IsTabStop="False" Background="{x:Null}" TextElement.Foreground="{TemplateBinding Foreground}" />
                         </Grid>
                         <ControlTemplate.Triggers>
@@ -92,8 +93,8 @@
             <Image Source="Assets/img-ico.png" Margin="52"/>
 
             <Button x:Name="btnList" Style="{StaticResource btnMenu}" Content="Список материалов"/>
-            <Button x:Name="btnSuppliers" Style="{StaticResource btnMenu}" Content="Поставщики"/>
-            <Button x:Name="btnChange" Style="{StaticResource btnMenu}" Content="Изменить"/>
+            <Button x:Name="btnSuppliers" Style="{StaticResource btnMenu}" Content="Поставщики" Click="btnSuppliers_Click"/>
+            <Button x:Name="btnChange" Style="{StaticResource btnMenu}" Content="Изменить" Click="btnChange_Click"/>
         </StackPanel>
 
         <!--Search panel-->
@@ -141,7 +142,7 @@
             </ComboBox>
         </WrapPanel>
 
-        <DataGrid Background="White" Grid.Column="1" Grid.Row="1">
+        <DataGrid x:Name="tableMaterials" Background="White" Grid.Column="1" Grid.Row="1">
             
         </DataGrid>
         

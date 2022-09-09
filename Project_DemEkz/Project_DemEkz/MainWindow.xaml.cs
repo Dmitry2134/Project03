@@ -20,14 +20,30 @@ namespace Project_DemEkz
     /// </summary>
     public partial class MainWindow : Window
     {
+        AppContext db;
+
         public MainWindow()
         {
             InitializeComponent();
+
+            UpdateDataGrid();
         }
 
         private void UpdateDataGrid()
         {
-            MessageBox.Show($"{TbSearch.Text}");
+            db = new AppContext();
+
+            List<Material> materials = db.Materials.ToList();
+
+            if (materials.Count != 0)
+            {
+                List<Material> materialsList = new List<Material>
+                {
+
+                };
+
+                tableMaterials.ItemsSource = materials;
+            }
         }
 
         private void cb_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -40,5 +56,20 @@ namespace Project_DemEkz
             UpdateDataGrid();
         }
 
+        private void btnChange_Click(object sender, RoutedEventArgs e)
+        {
+            WinEdit winEdit = new WinEdit();
+            winEdit.Show();
+
+            this.Close();
+        }
+
+        private void btnSuppliers_Click(object sender, RoutedEventArgs e)
+        {
+            WinSuppliers winSuppliers = new WinSuppliers();
+            winSuppliers.Show();
+
+            this.Close();
+        }
     }
 }
