@@ -100,5 +100,8 @@
   <ItemGroup>
     <Resource Include="Большая пачка.ico" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\img-ico.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
