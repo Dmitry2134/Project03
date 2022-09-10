@@ -123,28 +123,30 @@
                         <Setter Property="BorderThickness" Value="2"/>
                     </Style>
                 </ComboBox.ItemContainerStyle>
-                <ComboBoxItem Content="Все типы"/>
+                <ComboBoxItem Content="Все категории"/>
                 <ComboBoxItem Content="Коврики"/>
                 <ComboBoxItem Content="Электроника"/>
                 <ComboBoxItem Content="Светильники"/>
             </ComboBox>
 
             <!--Filter-->
-            <ComboBox x:Name="cbFilter" BorderThickness="2" Margin="50,0,0,0" Width="150" IsEditable="True" IsReadOnly="True" Text="Фильтр" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" SelectionChanged="cb_SelectionChanged" >
+            <ComboBox x:Name="cbFilter" BorderThickness="2" Margin="50,0,0,0" Width="150" IsEditable="True" IsReadOnly="True" SelectedIndex="0" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" SelectionChanged="cb_SelectionChanged" >
                 <ComboBox.ItemContainerStyle>
                     <Style TargetType="ComboBoxItem">
                         <Setter Property="BorderBrush" Value="#FFC1C1"/>
                         <Setter Property="BorderThickness" Value="2"/>
                     </Style>
                 </ComboBox.ItemContainerStyle>
+                <ComboBoxItem Content="Без фильтра"/>
                 <ComboBoxItem Content="По возрастанию"/>
                 <ComboBoxItem Content="По убыванию"/>
             </ComboBox>
         </WrapPanel>
 
-        <DataGrid x:Name="tableMaterials" Background="White" Grid.Column="1" Grid.Row="1">
-            
-        </DataGrid>
-        
+        <ScrollViewer Grid.Row="1" Grid.Column="1">
+            <WrapPanel x:Name="wrap" HorizontalAlignment="Center" >
+            </WrapPanel>
+        </ScrollViewer>
+
     </Grid>
 </Window>

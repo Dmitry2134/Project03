@@ -11,6 +11,8 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using System.Data.SqlClient;
+using System.Data;
 
 namespace Project_DemEkz
 {
@@ -19,12 +21,12 @@ namespace Project_DemEkz
     /// </summary>
     public partial class WinEdit : Window
     {
-        AppContext db;
+        DataBase dataBase = new DataBase();
+
         public WinEdit()
         {
             InitializeComponent();
 
-            db = new AppContext();
         }
 
         private void btnList_Click(object sender, RoutedEventArgs e)
@@ -45,18 +47,54 @@ namespace Project_DemEkz
 
         private void AddMaterial()
         {
-            Material material = new Material
+            if (CheckPosition())
             {
-                name = tbName.Text,
-                category = tbCategory.Text,
-                price = Convert.ToInt32(tbPrice.Text)
-            };
-            db.Materials.Add(material);
-            MessageBox.Show("Добавленно");
+                string name = tbName.Text;
+                string category = tbCategory.Text;
+                int price = Convert.ToInt32(tbPrice.Text);
+                string postavka = tbPostavka.Text;
 
-            List<Material> materialsss = db.Materials.ToList();
+                string quereString = $"INSERT INTO materials(name,category,price,postavka) values('{name}', '{category}', '{price}', '{postavka}')";
 
-            tbName.Text = materialsss[0].name;
+                SqlCommand sqlCommand = new SqlCommand(quereString, dataBase.GetConnection());
+
+                dataBase.OpenConnection();
+
+                if (sqlCommand.ExecuteNonQuery() == 1)
+                    MessageBox.Show("Успешно!");
+                else
+                    MessageBox.Show("Товар не добавлен!");
+
+                dataBase.CloseConnection();
+            }
+        }
+
+        private Boolean CheckPosition()
+        {
+            string name = tbName.Text;
+            string category = tbCategory.Text;
+            int price = Convert.ToInt32(tbPrice.Text);
+            string postavka = tbPostavka.Text;
+
+            SqlDataAdapter sqlDataAdapter = new SqlDataAdapter();
+
+            DataTable dataTable = new DataTable();
+
+            string quereString = $"select id , name, category, price, postavka from materials  where name = '{name}' and category = '{category}' and price = '{price}' and postavka = '{postavka}' ";
+
+            SqlCommand sqlCommand = new SqlCommand(quereString, dataBase.GetConnection());            
+
+            sqlDataAdapter.SelectCommand = sqlCommand;
+
+            sqlDataAdapter.Fill(dataTable);
+
+            if (dataTable.Rows.Count > 1)
+            {
+                MessageBox.Show("Товар уже существует!");
+                return false;
+            }
+            else
+                return true;         
         }
 
         private void btnAdd_Click(object sender, RoutedEventArgs e)

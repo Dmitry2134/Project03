@@ -108,6 +108,7 @@
                 <RowDefinition/>
                 <RowDefinition/>
                 <RowDefinition/>
+                <RowDefinition/>
                 <RowDefinition Height="100"/>
             </Grid.RowDefinitions>
 
@@ -153,7 +154,21 @@
                 </TextBlock.Style>
             </TextBlock>
 
-            <Button x:Name="btnAdd" Style="{StaticResource btnAdd}" Content="Добавить" FontSize="17" Foreground="#D32B39" Width="130" Height="60" Grid.Row="3" HorizontalAlignment="Right" Margin="0,0,100,0" Click="btnAdd_Click" />
+            <TextBox x:Name="tbPostavka" Style="{StaticResource tbSearch}" Width="700" Text="" Margin="0,0,0,0" Grid.Row="3"/>
+            <TextBlock IsHitTestVisible="False" Text="Поставщик" FontSize="16" Foreground="LightGray" Grid.Row="3" VerticalAlignment="Center" Margin="73,0,0,0">
+                <TextBlock.Style>
+                    <Style TargetType="{x:Type TextBlock}">
+                        <Setter Property="Visibility" Value="Collapsed"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding Text, ElementName=tbPostavka}" Value="">
+                                <Setter Property="Visibility" Value="Visible"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </TextBlock.Style>
+            </TextBlock>
+
+            <Button x:Name="btnAdd" Style="{StaticResource btnAdd}" Content="Добавить" FontSize="17" Foreground="#D32B39" Width="130" Height="60" Grid.Row="4" HorizontalAlignment="Right" Margin="0,0,100,0" Click="btnAdd_Click" />
         </Grid>
     </Grid>
 </Window>

@@ -12,7 +12,6 @@ C:\Users\Twinkle\Documents\GitHub\Project03\Project_DemEkz\Project_DemEkz\obj\De
 C:\Users\Twinkle\Documents\GitHub\Project03\Project_DemEkz\Project_DemEkz\obj\Debug\Project_DemEkz.csproj.CoreCompileInputs.cache
 C:\Users\Twinkle\Documents\GitHub\Project03\Project_DemEkz\Project_DemEkz\obj\Debug\Project_DemEkz.exe
 C:\Users\Twinkle\Documents\GitHub\Project03\Project_DemEkz\Project_DemEkz\obj\Debug\Project_DemEkz.pdb
-C:\Users\Twinkle\Documents\GitHub\Project03\Project_DemEkz\Project_DemEkz\bin\Debug\warehouse.db
 C:\Users\Twinkle\Documents\GitHub\Project03\Project_DemEkz\Project_DemEkz\bin\Debug\EntityFramework.dll
 C:\Users\Twinkle\Documents\GitHub\Project03\Project_DemEkz\Project_DemEkz\bin\Debug\EntityFramework.SqlServer.dll
 C:\Users\Twinkle\Documents\GitHub\Project03\Project_DemEkz\Project_DemEkz\bin\Debug\System.Data.SQLite.dll
@@ -26,3 +25,4 @@ C:\Users\Twinkle\Documents\GitHub\Project03\Project_DemEkz\Project_DemEkz\obj\De
 C:\Users\Twinkle\Documents\GitHub\Project03\Project_DemEkz\Project_DemEkz\obj\Debug\WinEdit.baml
 C:\Users\Twinkle\Documents\GitHub\Project03\Project_DemEkz\Project_DemEkz\obj\Debug\WinSuppliers.baml
 C:\Users\Twinkle\Documents\GitHub\Project03\Project_DemEkz\Project_DemEkz\obj\Debug\Project_DemEkz.csproj.CopyComplete
+C:\Users\Twinkle\Documents\GitHub\Project03\Project_DemEkz\Project_DemEkz\obj\Debug\Project_DemEkz.csproj.AssemblyReference.cache
