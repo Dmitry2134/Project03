@@ -1,18 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Data.SqlClient;
+using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using System.Data.SqlClient;
 
 namespace Project_DemEkz
 {
@@ -24,27 +17,44 @@ namespace Project_DemEkz
         DataBase dataBase = new DataBase();
 
         List<Material> materialsList = new List<Material>();
+        List<Category> categoriesList = new List<Category>();
+
+
 
         public MainWindow()
         {
             InitializeComponent();
+
+            ReadMaterials();
+            ReadCategories();
+
+            CreateItemFromType();
+
             UpdateList();
+
+            tbListClear.Visibility = Visibility.Visible;
         }
 
         public void UpdateList()
         {
-            if(wrap != null)
-            wrap.Children.Clear();
-
+            if (wrap != null)
+                wrap.Children.Clear();
             materialsList.Clear();
 
-            Read();
-            CreateItem();
-        }       
+            ReadMaterials();
+
+            if (TbSearch.Text == "" && cbTypes.SelectedItem.ToString() == "Все категории")
+                CreateItemFromList();
+            else if (cbTypes.SelectedItem.ToString() == "Все категории" && TbSearch.Text != "")
+                CreateItemFromList(TbSearch.Text);
+            else if (cbTypes.SelectedItem.ToString() != "Все категории" && TbSearch.Text == "")
+                CreateItemFromListWithCategory();
+        }
+
 
         private void cb_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-                UpdateList();
+            //UpdateList();
         }
 
         private void TbSearch_TextChanged(object sender, TextChangedEventArgs e)
@@ -68,7 +78,7 @@ namespace Project_DemEkz
             this.Close();
         }
 
-        private void Read()
+        private void ReadMaterials()
         {
             string queryString = $"select * from materials";
 
@@ -77,7 +87,7 @@ namespace Project_DemEkz
             dataBase.OpenConnection();
 
             SqlDataReader reader = sqlCommand.ExecuteReader();
-            
+
             while (reader.Read())
             {
                 Material material = new Material();
@@ -92,10 +102,45 @@ namespace Project_DemEkz
             reader.Close();
         }
 
-        private void CreateItem()
+        private void ReadCategories()
         {
+            string queryString = $"select * from categories";
+
+            SqlCommand sqlCommand = new SqlCommand(queryString, dataBase.GetConnection());
+
+            dataBase.OpenConnection();
+
+            SqlDataReader reader = sqlCommand.ExecuteReader();
+
+            while (reader.Read())
+            {
+                Category category = new Category
+                {
+                    name = reader["category"].ToString()
+                };
+                categoriesList.Add(category);
+            }
+            reader.Close();
+
+            //CreateItemFromType();
+        }
+
+        private void CreateItemFromType()
+        {
+            //Добавление категорий в комбобокс
+            for (int i = 0; i < categoriesList.Count; i++)
+            {
+                cbTypes.Items.Add($"{categoriesList[i].name}");
+            }
+            cbTypes.SelectedIndex = 0;
+        }
+
+        private void CreateItemFromList()
+        {
+            //Добавления материала в список
             for (int i = 0; i < materialsList.Count; i++)
             {
+
                 Grid grid = new Grid();
                 grid.Margin = new Thickness(10);
 
@@ -124,9 +169,9 @@ namespace Project_DemEkz
                 {
                     FontFamily = new FontFamily("Verdana"),
                     Foreground = (Brush)cb.ConvertFrom("#1b1464"),
-                    Margin = new Thickness(180,0,0,0),
+                    Margin = new Thickness(180, 0, 0, 0),
                     FontSize = 16,
-                    Text = "Название товара: "+ materialsList[i].name + "\n"
+                    Text = "Название товара: " + materialsList[i].name + "\n"
                 };
 
                 TextBlock cgText = new TextBlock
@@ -157,10 +202,10 @@ namespace Project_DemEkz
                 };
 
                 Image image = new Image();
-                image.Source = new BitmapImage(new Uri("pack://application:,,,/noimage.png"));
+                image.Source = new BitmapImage(new Uri("pack://application:,,,/Assets/noimage.png"));
                 image.Width = 110;
                 image.Height = 110;
-                image.Margin = new Thickness(10,20,0,0);
+                image.Margin = new Thickness(10, 20, 0, 0);
                 image.HorizontalAlignment = HorizontalAlignment.Left;
                 image.VerticalAlignment = VerticalAlignment.Center;
 
@@ -176,17 +221,383 @@ namespace Project_DemEkz
                 Grid.SetRow(posText, 3);
                 grid.Children.Add(posText);
 
-                
-
                 border.Child = grid;
 
                 if (wrap != null)
                     wrap.Children.Add(border);
-            }
 
+            }
         }
 
+        private void CreateItemFromList(string nameSearch)
+        {
+            //Добавления материала в список по поиску
+            for (int i = 0; i < materialsList.Count; i++)
+            {
+                if (!Regex.IsMatch(materialsList[i].name, $"^[^{nameSearch}]+$"))
+                {
+                    if (cbTypes.SelectedItem.ToString() == "Все категории")
+                    {
+                        Grid grid = new Grid();
+                        grid.Margin = new Thickness(10);
 
+                        grid.RowDefinitions.Add(new RowDefinition());
+                        grid.RowDefinitions.Add(new RowDefinition());
+                        grid.RowDefinitions.Add(new RowDefinition());
+                        grid.RowDefinitions.Add(new RowDefinition());
+
+                        grid.RowDefinitions[0].Height = new GridLength(35);
+                        grid.RowDefinitions[1].Height = new GridLength(35);
+                        grid.RowDefinitions[2].Height = new GridLength(35);
+                        grid.RowDefinitions[3].Height = new GridLength(35);
+
+                        var cb = new BrushConverter();
+
+                        Border border = new Border
+                        {
+                            Width = 750,
+                            BorderThickness = new Thickness(2),
+                            BorderBrush = (Brush)cb.ConvertFrom("#FFC1C1"),
+                            CornerRadius = new CornerRadius(20, 20, 20, 20),
+                            Margin = new Thickness(15)
+                        };
+
+                        TextBlock nText = new TextBlock
+                        {
+                            FontFamily = new FontFamily("Verdana"),
+                            Foreground = (Brush)cb.ConvertFrom("#1b1464"),
+                            Margin = new Thickness(180, 0, 0, 0),
+                            FontSize = 16,
+                            Text = "Название товара: " + materialsList[i].name + "\n"
+                        };
+
+                        TextBlock cgText = new TextBlock
+                        {
+                            FontFamily = new FontFamily("Verdana"),
+                            Foreground = (Brush)cb.ConvertFrom("#1b1464"),
+                            FontSize = 16,
+                            Margin = new Thickness(180, 0, 0, 0),
+                            Text = "Категория: " + materialsList[i].category + "\n"
+                        };
+
+                        TextBlock prText = new TextBlock
+                        {
+                            FontFamily = new FontFamily("Verdana"),
+                            Foreground = (Brush)cb.ConvertFrom("#1b1464"),
+                            FontSize = 16,
+                            Margin = new Thickness(180, 0, 0, 0),
+                            Text = "Стоимость : " + materialsList[i].price.ToString() + "\n"
+                        };
+
+                        TextBlock posText = new TextBlock
+                        {
+                            FontFamily = new FontFamily("Verdana"),
+                            Foreground = (Brush)cb.ConvertFrom("#1b1464"),
+                            FontSize = 16,
+                            Margin = new Thickness(180, 0, 0, 0),
+                            Text = "Поставщик : " + materialsList[i].postavka + "\n"
+                        };
+
+                        Image image = new Image();
+                        image.Source = new BitmapImage(new Uri("pack://application:,,,/Assets/noimage.png"));
+                        image.Width = 110;
+                        image.Height = 110;
+                        image.Margin = new Thickness(10, 20, 0, 0);
+                        image.HorizontalAlignment = HorizontalAlignment.Left;
+                        image.VerticalAlignment = VerticalAlignment.Center;
+
+                        Grid.SetRowSpan(image, 3);
+                        grid.Children.Add(image);
+
+                        Grid.SetRow(nText, 0);
+                        grid.Children.Add(nText);
+                        Grid.SetRow(cgText, 1);
+                        grid.Children.Add(cgText);
+                        Grid.SetRow(prText, 2);
+                        grid.Children.Add(prText);
+                        Grid.SetRow(posText, 3);
+                        grid.Children.Add(posText);
+
+                        border.Child = grid;
+
+                        if (wrap != null)
+                            wrap.Children.Add(border);
+                    }
+
+                    if (cbTypes.SelectedItem.ToString() == materialsList[i].category)
+                    {
+                        Grid grid = new Grid();
+                        grid.Margin = new Thickness(10);
+
+                        grid.RowDefinitions.Add(new RowDefinition());
+                        grid.RowDefinitions.Add(new RowDefinition());
+                        grid.RowDefinitions.Add(new RowDefinition());
+                        grid.RowDefinitions.Add(new RowDefinition());
+
+                        grid.RowDefinitions[0].Height = new GridLength(35);
+                        grid.RowDefinitions[1].Height = new GridLength(35);
+                        grid.RowDefinitions[2].Height = new GridLength(35);
+                        grid.RowDefinitions[3].Height = new GridLength(35);
+
+                        var cb = new BrushConverter();
+
+                        Border border = new Border
+                        {
+                            Width = 750,
+                            BorderThickness = new Thickness(2),
+                            BorderBrush = (Brush)cb.ConvertFrom("#FFC1C1"),
+                            CornerRadius = new CornerRadius(20, 20, 20, 20),
+                            Margin = new Thickness(15)
+                        };
+
+                        TextBlock nText = new TextBlock
+                        {
+                            FontFamily = new FontFamily("Verdana"),
+                            Foreground = (Brush)cb.ConvertFrom("#1b1464"),
+                            Margin = new Thickness(180, 0, 0, 0),
+                            FontSize = 16,
+                            Text = "Название товара: " + materialsList[i].name + "\n"
+                        };
+
+                        TextBlock cgText = new TextBlock
+                        {
+                            FontFamily = new FontFamily("Verdana"),
+                            Foreground = (Brush)cb.ConvertFrom("#1b1464"),
+                            FontSize = 16,
+                            Margin = new Thickness(180, 0, 0, 0),
+                            Text = "Категория: " + materialsList[i].category + "\n"
+                        };
+
+                        TextBlock prText = new TextBlock
+                        {
+                            FontFamily = new FontFamily("Verdana"),
+                            Foreground = (Brush)cb.ConvertFrom("#1b1464"),
+                            FontSize = 16,
+                            Margin = new Thickness(180, 0, 0, 0),
+                            Text = "Стоимость : " + materialsList[i].price.ToString() + "\n"
+                        };
+
+                        TextBlock posText = new TextBlock
+                        {
+                            FontFamily = new FontFamily("Verdana"),
+                            Foreground = (Brush)cb.ConvertFrom("#1b1464"),
+                            FontSize = 16,
+                            Margin = new Thickness(180, 0, 0, 0),
+                            Text = "Поставщик : " + materialsList[i].postavka + "\n"
+                        };
+
+                        Image image = new Image();
+                        image.Source = new BitmapImage(new Uri("pack://application:,,,/Assets/noimage.png"));
+                        image.Width = 110;
+                        image.Height = 110;
+                        image.Margin = new Thickness(10, 20, 0, 0);
+                        image.HorizontalAlignment = HorizontalAlignment.Left;
+                        image.VerticalAlignment = VerticalAlignment.Center;
+
+                        Grid.SetRowSpan(image, 3);
+                        grid.Children.Add(image);
+
+                        Grid.SetRow(nText, 0);
+                        grid.Children.Add(nText);
+                        Grid.SetRow(cgText, 1);
+                        grid.Children.Add(cgText);
+                        Grid.SetRow(prText, 2);
+                        grid.Children.Add(prText);
+                        Grid.SetRow(posText, 3);
+                        grid.Children.Add(posText);
+
+                        border.Child = grid;
+
+                        if (wrap != null)
+                            wrap.Children.Add(border);
+                    }
+                }
+            }
+        }
+
+        private void CreateItemFromListWithCategory()
+        {
+            for (int i = 0; i < materialsList.Count; i++)
+            {
+                //Добавления материала в список по категориям
+                if (cbTypes.SelectedItem.ToString() == "Все категории")
+                {
+                    Grid grid = new Grid();
+                    grid.Margin = new Thickness(10);
+
+                    grid.RowDefinitions.Add(new RowDefinition());
+                    grid.RowDefinitions.Add(new RowDefinition());
+                    grid.RowDefinitions.Add(new RowDefinition());
+                    grid.RowDefinitions.Add(new RowDefinition());
+
+                    grid.RowDefinitions[0].Height = new GridLength(35);
+                    grid.RowDefinitions[1].Height = new GridLength(35);
+                    grid.RowDefinitions[2].Height = new GridLength(35);
+                    grid.RowDefinitions[3].Height = new GridLength(35);
+
+                    var cb = new BrushConverter();
+
+                    Border border = new Border
+                    {
+                        Width = 750,
+                        BorderThickness = new Thickness(2),
+                        BorderBrush = (Brush)cb.ConvertFrom("#FFC1C1"),
+                        CornerRadius = new CornerRadius(20, 20, 20, 20),
+                        Margin = new Thickness(15)
+                    };
+
+                    TextBlock nText = new TextBlock
+                    {
+                        FontFamily = new FontFamily("Verdana"),
+                        Foreground = (Brush)cb.ConvertFrom("#1b1464"),
+                        Margin = new Thickness(180, 0, 0, 0),
+                        FontSize = 16,
+                        Text = "Название товара: " + materialsList[i].name + "\n"
+                    };
+
+                    TextBlock cgText = new TextBlock
+                    {
+                        FontFamily = new FontFamily("Verdana"),
+                        Foreground = (Brush)cb.ConvertFrom("#1b1464"),
+                        FontSize = 16,
+                        Margin = new Thickness(180, 0, 0, 0),
+                        Text = "Категория: " + materialsList[i].category + "\n"
+                    };
+
+                    TextBlock prText = new TextBlock
+                    {
+                        FontFamily = new FontFamily("Verdana"),
+                        Foreground = (Brush)cb.ConvertFrom("#1b1464"),
+                        FontSize = 16,
+                        Margin = new Thickness(180, 0, 0, 0),
+                        Text = "Стоимость : " + materialsList[i].price.ToString() + "\n"
+                    };
+
+                    TextBlock posText = new TextBlock
+                    {
+                        FontFamily = new FontFamily("Verdana"),
+                        Foreground = (Brush)cb.ConvertFrom("#1b1464"),
+                        FontSize = 16,
+                        Margin = new Thickness(180, 0, 0, 0),
+                        Text = "Поставщик : " + materialsList[i].postavka + "\n"
+                    };
+
+                    Image image = new Image();
+                    image.Source = new BitmapImage(new Uri("pack://application:,,,/Assets/noimage.png"));
+                    image.Width = 110;
+                    image.Height = 110;
+                    image.Margin = new Thickness(10, 20, 0, 0);
+                    image.HorizontalAlignment = HorizontalAlignment.Left;
+                    image.VerticalAlignment = VerticalAlignment.Center;
+
+                    Grid.SetRowSpan(image, 3);
+                    grid.Children.Add(image);
+
+                    Grid.SetRow(nText, 0);
+                    grid.Children.Add(nText);
+                    Grid.SetRow(cgText, 1);
+                    grid.Children.Add(cgText);
+                    Grid.SetRow(prText, 2);
+                    grid.Children.Add(prText);
+                    Grid.SetRow(posText, 3);
+                    grid.Children.Add(posText);
+
+                    border.Child = grid;
+
+                    if (wrap != null)
+                        wrap.Children.Add(border);
+                }
+
+
+                if (cbTypes.SelectedItem.ToString() == materialsList[i].category)
+                {
+                    Grid grid = new Grid();
+                    grid.Margin = new Thickness(10);
+
+                    grid.RowDefinitions.Add(new RowDefinition());
+                    grid.RowDefinitions.Add(new RowDefinition());
+                    grid.RowDefinitions.Add(new RowDefinition());
+                    grid.RowDefinitions.Add(new RowDefinition());
+
+                    grid.RowDefinitions[0].Height = new GridLength(35);
+                    grid.RowDefinitions[1].Height = new GridLength(35);
+                    grid.RowDefinitions[2].Height = new GridLength(35);
+                    grid.RowDefinitions[3].Height = new GridLength(35);
+
+                    var cb = new BrushConverter();
+
+                    Border border = new Border
+                    {
+                        Width = 750,
+                        BorderThickness = new Thickness(2),
+                        BorderBrush = (Brush)cb.ConvertFrom("#FFC1C1"),
+                        CornerRadius = new CornerRadius(20, 20, 20, 20),
+                        Margin = new Thickness(15)
+                    };
+
+                    TextBlock nText = new TextBlock
+                    {
+                        FontFamily = new FontFamily("Verdana"),
+                        Foreground = (Brush)cb.ConvertFrom("#1b1464"),
+                        Margin = new Thickness(180, 0, 0, 0),
+                        FontSize = 16,
+                        Text = "Название товара: " + materialsList[i].name + "\n"
+                    };
+
+                    TextBlock cgText = new TextBlock
+                    {
+                        FontFamily = new FontFamily("Verdana"),
+                        Foreground = (Brush)cb.ConvertFrom("#1b1464"),
+                        FontSize = 16,
+                        Margin = new Thickness(180, 0, 0, 0),
+                        Text = "Категория: " + materialsList[i].category + "\n"
+                    };
+
+                    TextBlock prText = new TextBlock
+                    {
+                        FontFamily = new FontFamily("Verdana"),
+                        Foreground = (Brush)cb.ConvertFrom("#1b1464"),
+                        FontSize = 16,
+                        Margin = new Thickness(180, 0, 0, 0),
+                        Text = "Стоимость : " + materialsList[i].price.ToString() + "\n"
+                    };
+
+                    TextBlock posText = new TextBlock
+                    {
+                        FontFamily = new FontFamily("Verdana"),
+                        Foreground = (Brush)cb.ConvertFrom("#1b1464"),
+                        FontSize = 16,
+                        Margin = new Thickness(180, 0, 0, 0),
+                        Text = "Поставщик : " + materialsList[i].postavka + "\n"
+                    };
+
+                    Image image = new Image();
+                    image.Source = new BitmapImage(new Uri("pack://application:,,,/Assets/noimage.png"));
+                    image.Width = 110;
+                    image.Height = 110;
+                    image.Margin = new Thickness(10, 20, 0, 0);
+                    image.HorizontalAlignment = HorizontalAlignment.Left;
+                    image.VerticalAlignment = VerticalAlignment.Center;
+
+                    Grid.SetRowSpan(image, 3);
+                    grid.Children.Add(image);
+
+                    Grid.SetRow(nText, 0);
+                    grid.Children.Add(nText);
+                    Grid.SetRow(cgText, 1);
+                    grid.Children.Add(cgText);
+                    Grid.SetRow(prText, 2);
+                    grid.Children.Add(prText);
+                    Grid.SetRow(posText, 3);
+                    grid.Children.Add(posText);
+
+                    border.Child = grid;
+
+                    if (wrap != null)
+                        wrap.Children.Add(border);
+                }
+            }
+        }
     }
 }
 //string name = tbName.Text;

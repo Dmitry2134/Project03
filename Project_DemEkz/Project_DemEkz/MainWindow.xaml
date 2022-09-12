@@ -123,10 +123,6 @@
                         <Setter Property="BorderThickness" Value="2"/>
                     </Style>
                 </ComboBox.ItemContainerStyle>
-                <ComboBoxItem Content="Все категории"/>
-                <ComboBoxItem Content="Коврики"/>
-                <ComboBoxItem Content="Электроника"/>
-                <ComboBoxItem Content="Светильники"/>
             </ComboBox>
 
             <!--Filter-->
@@ -147,6 +143,8 @@
             <WrapPanel x:Name="wrap" HorizontalAlignment="Center" >
             </WrapPanel>
         </ScrollViewer>
+
+        <TextBlock x:Name="tbListClear" Text="Ничего не найдено" FontSize="35" Foreground="DarkGray" Grid.Column="1" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center" Visibility="Visible"/>
 
     </Grid>
 </Window>

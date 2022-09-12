@@ -77,7 +77,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Category.cs" />
     <Compile Include="Material.cs" />
+    <Compile Include="Supplier.cs" />
     <Compile Include="WinEdit.xaml.cs">
       <DependentUpon>WinEdit.xaml</DependentUpon>
     </Compile>
@@ -143,7 +145,7 @@
     <Folder Include="DataBase\" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="noimage.png">
+    <Resource Include="Assets\noimage.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
   </ItemGroup>
